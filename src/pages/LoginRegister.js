@@ -1,31 +1,36 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { NetflixContext } from '../context';
-import { Redirect } from 'react-router-dom';
+import { auth, generateUserDocument } from '../firebase';
 
 const LoginRegister = () => {
-	const { signIn, signUp } = useContext(NetflixContext);
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
+	const [ error, setError ] = useState('');
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
+	const signInWithEmailAndPasswordHandler = (event, email, password) => {
+		event.preventDefault();
+		auth.signInWithEmailAndPassword(email, password).catch((error) => {
+			setError('Error signing in with password and email!');
+			console.error('Error signing in with password and email', error);
+		});
+		console.log('ssssssssssss');
+	};
 
-		if ((e.target.id = 'signin')) {
-			signIn(email, password);
-			// const db = firebase.firestore();
-			// db.settings({
-			// 	timestampsInSnapshots: true,
-			// });
+	const createUserWithEmailAndPasswordHandler = async (event, email, password) => {
+		event.preventDefault();
+		try {
+			const { user } = await auth.createUserWithEmailAndPassword(email, password);
+			generateUserDocument(user);
+		} catch (error) {
+			setError('Error Signing up with email and password');
 		}
-		if ((e.target.id = 'signup')) {
-			signUp(email, password);
-		}
-
-		console.log('it is submitted');
+		setEmail('');
+		setPassword('');
+		console.log('signed up successfully');
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form>
 			<div className='container  '>
 				<div className='center'>
 					<div className='form-group'>
@@ -51,10 +56,22 @@ const LoginRegister = () => {
 					</div>
 
 					<div className='form-group d-flex justify-content-between'>
-						<button className='btn btn-secondary' id='signin'>
+						<button
+							type='submit'
+							className='btn btn-secondary'
+							id='signin'
+							onClick={(event) => {
+								signInWithEmailAndPasswordHandler(event, email, password);
+							}}>
 							Sign In
 						</button>
-						<button className='btn btn-light' id='signup'>
+						<button
+							type='submit'
+							className='btn btn-light'
+							id='signup'
+							onClick={(event) => {
+								createUserWithEmailAndPasswordHandler(event, email, password);
+							}}>
 							Sign Up
 						</button>
 					</div>

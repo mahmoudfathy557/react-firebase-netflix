@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import Genere from '../components/Genere';
-import firebase from '../firebase';
+import { firestore } from '../firebase';
 
 const WatchlistPage = () => {
 	const [ movies, setMovies ] = useState([]);
 	React.useEffect(() => {
 		const fetchData = async () => {
-			const db = firebase.firestore();
+			// export const firestore = firebase.firestore();
+			const db = firestore;
 			const data = await db.collection('movies').get();
 			setMovies(data.map((doc) => doc.data()));
 		};

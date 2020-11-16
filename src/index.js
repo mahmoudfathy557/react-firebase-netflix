@@ -4,21 +4,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { NetflixProvider } from './context';
-// import firebaseConfig from './fbConfig';
-// import firebase from 'firebase/app';
-// import 'firebase/auth';
-import { FirebaseAuthProvider, FirebaseAuthConsumer } from '@react-firebase/auth';
-
-import firebase from 'firebase/app';
-import 'firebase/auth';
 
 ReactDOM.render(
 	<React.StrictMode>
-		<FirebaseAuthProvider {...firebaseConfig} firebase={firebase}>
-			<NetflixProvider>
-				<App />
-			</NetflixProvider>
-		</FirebaseAuthProvider>
+		<NetflixProvider>
+			<App />
+		</NetflixProvider>
 	</React.StrictMode>,
 	document.getElementById('root'),
 );
