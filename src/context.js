@@ -6,6 +6,7 @@ const NetflixContext = React.createContext();
 const NetflixProvider = ({ children }) => {
 	const [ isUser, setIsUser ] = useState(null);
 	const [ movies, setMovies ] = useState([]);
+	const [ moviesGenres, setMoviesGenres ] = useState([]);
 
 	const signIn = (email, password) => {
 		const promise = auth.signInWithEmailAndPassword(email, password);
@@ -54,25 +55,28 @@ const NetflixProvider = ({ children }) => {
 		});
 	}, []);
 
-	const getMovies = () => {
+	const getMovies = async () => {
+		let moviesList = [];
 		const movies = firestore.collection('/movies');
-		movies.get().then((docs) => {
-			let moviesList = [];
-			docs.forEach((doc) => {
-				let id = doc.id;
-				let data = doc.data();
-				moviesList.push({ data, id });
+		movies
+			.get()
+			.then((docs) => {
+				docs.forEach((doc) => {
+					let id = doc.id;
+					let data = doc.data();
+					moviesList.push({ data, id });
+				});
+				setMovies(moviesList);
+				return moviesList;
+			})
+			.then((res) => {
+				// getting sorted genres
+				moviesData(res);
 			});
-			setMovies(moviesList);
-		});
 	};
 
-	useEffect(() => {
-		getMovies();
-	}, []);
-
-	const moviesData = () => {
-		let films = movies.map((movie) => {
+	const moviesData = (films) => {
+		let aflam = films.map((movie) => {
 			const { genres, title, storyline, posterurl } = movie.data;
 			const { id } = movie;
 			const singleMovie = { title: title, description: storyline, img: posterurl, genres: genres, id: id };
@@ -81,7 +85,7 @@ const NetflixProvider = ({ children }) => {
 		});
 
 		const uniqueGenres = new Set();
-		let genres = movies.map((movie) => {
+		let genres = films.map((movie) => {
 			return movie.data.genres.map((genre) => uniqueGenres.add(genre));
 		});
 		/*
@@ -96,18 +100,16 @@ const NetflixProvider = ({ children }) => {
 		const genreMovies = {};
 
 		for (let item of uniqueGenres.values()) {
-			const moviesOfSingleGenre = films.filter((film) => film.genres.includes(item));
+			const moviesOfSingleGenre = aflam.filter((film) => film.genres.includes(item));
 			genreMovies[item] = { genre: item, movies: moviesOfSingleGenre };
 		}
 
-		console.log(genreMovies);
+		setMoviesGenres(genreMovies);
 	};
 
 	useEffect(() => {
-		moviesData();
+		getMovies();
 	}, []);
-
-	console.log(moviesData());
 
 	return (
 		<NetflixContext.Provider
@@ -117,6 +119,7 @@ const NetflixProvider = ({ children }) => {
 				signUp,
 				logOut,
 				movies,
+				moviesGenres,
 			}}>
 			{children}
 		</NetflixContext.Provider>

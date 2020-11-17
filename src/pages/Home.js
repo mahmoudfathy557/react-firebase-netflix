@@ -4,6 +4,8 @@ import Genere from '../components/Genere';
 import { Link, Redirect } from 'react-router-dom';
 
 const Home = () => {
+	const { moviesGenres } = React.useContext(NetflixContext);
+	// console.log(moviesGenres);
 	return (
 		<div className='movies-list'>
 			<div className='row'>
