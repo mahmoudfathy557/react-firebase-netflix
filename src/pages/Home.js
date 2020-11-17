@@ -2,7 +2,6 @@ import React from 'react';
 import { NetflixContext } from '../context';
 import Genere from '../components/Genere';
 import { Link, Redirect } from 'react-router-dom';
-import { auth } from '../firebase';
 
 const Home = () => {
 	return (

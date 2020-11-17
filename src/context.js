@@ -46,15 +46,9 @@ const NetflixProvider = ({ children }) => {
 			});
 	};
 
-	// const getUser = () => {
-	// 	console.log('useEffect occurred');
-	// 	return
-	// };
-
 	useEffect(() => {
 		auth.onAuthStateChanged((user) => {
 			if (user) {
-				console.log('user is signed in.');
 				setIsUser(user);
 			}
 		});
@@ -76,6 +70,44 @@ const NetflixProvider = ({ children }) => {
 	useEffect(() => {
 		getMovies();
 	}, []);
+
+	const moviesData = () => {
+		let films = movies.map((movie) => {
+			const { genres, title, storyline, posterurl } = movie.data;
+			const { id } = movie;
+			const singleMovie = { title: title, description: storyline, img: posterurl, genres: genres, id: id };
+
+			return singleMovie;
+		});
+
+		const uniqueGenres = new Set();
+		let genres = movies.map((movie) => {
+			return movie.data.genres.map((genre) => uniqueGenres.add(genre));
+		});
+		/*
+		shape of data => [
+			{
+				genre:'action'
+				movies:[...]
+			}
+		]
+		*/
+
+		const genreMovies = {};
+
+		for (let item of uniqueGenres.values()) {
+			const moviesOfSingleGenre = films.filter((film) => film.genres.includes(item));
+			genreMovies[item] = { genre: item, movies: moviesOfSingleGenre };
+		}
+
+		console.log(genreMovies);
+	};
+
+	useEffect(() => {
+		moviesData();
+	}, []);
+
+	console.log(moviesData());
 
 	return (
 		<NetflixContext.Provider
