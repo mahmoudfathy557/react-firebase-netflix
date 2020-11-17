@@ -1,13 +1,32 @@
-import React from 'react';
-import Application from './Application';
-import UserProvider from './providers/userProvider';
+import React, { Component } from 'react';
+import Home from './pages/Home';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import LoginRegister from './pages/LoginRegister';
+import MoviePage from './pages/MoviePage';
+import GenerePage from './pages/GenerePage';
+import WatchlistPage from './pages/WatchlistPage';
+import Navbar from './components/Navbar';
+import PrivateRoute from './PrivateRoute';
 
-function App() {
-	return (
-		<UserProvider>
-			<Application />
-		</UserProvider>
-	);
+class App extends Component {
+	render() {
+		return (
+			<Router>
+				<div className='App'>
+					<Navbar />
+					<Switch>
+						<Route exact path='/login' component={LoginRegister} />
+						<PrivateRoute>
+							<Route exact path='/' component={Home} />
+							<Route exact path='/generes/:genere' component={GenerePage} />
+							<Route path='/movie/:id' component={MoviePage} />
+							<Route exact path='/watchlist' component={WatchlistPage} />
+						</PrivateRoute>
+					</Switch>
+				</div>
+			</Router>
+		);
+	}
 }
 
 export default App;

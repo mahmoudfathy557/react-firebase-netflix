@@ -2,16 +2,15 @@ import React from 'react';
 import { NetflixContext } from '../context';
 import Genere from '../components/Genere';
 import { Link, Redirect } from 'react-router-dom';
-import { UserContext } from '../providers/userProvider';
+import { auth } from '../firebase';
+
 const Home = () => {
-	const user = React.useContext(UserContext);
-	console.log(user);
 	return (
-		<div className='movies-list     '>
+		<div className='movies-list'>
 			<div className='row'>
 				<div className='col-12 ml-0 genere-container'>
 					<Link to='/generes/:id' className='btn '>
-						<h1 className='text-capitalize my-3 ml-5 '>genere 1</h1>
+						<h1 className='text-capitalize my-3 ml-5 '>genere 1 </h1>
 					</Link>
 
 					<Genere />

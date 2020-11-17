@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import { NetflixContext } from '../context';
 
 const SignedInLinks = () => {
@@ -7,17 +8,17 @@ const SignedInLinks = () => {
 		<div>
 			<ul className='navbar-nav'>
 				<li className='nav-item  '>
-					<a className='nav-link ' href='/'>
-						Home <span className='sr-only'>(current)</span>
-					</a>
+					<NavLink className='nav-link ' to='/'>
+						Home
+					</NavLink>
 				</li>
 				<li className='nav-item'>
-					<a className='nav-link ' href='/watchlist'>
+					<NavLink className='nav-link ' to='/watchlist'>
 						Watchlist
-					</a>
+					</NavLink>
 				</li>
 				<li className='nav-item'>
-					<a className='nav-link' onClick={logOut}>
+					<a className='nav-link btn' href='/login' onClick={logOut}>
 						Log Out
 					</a>
 				</li>
