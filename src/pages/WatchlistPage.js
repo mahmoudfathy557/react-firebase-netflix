@@ -21,7 +21,6 @@ const WatchlistPage = () => {
 					</select>
 				</div>
 			</div>
-			<Genere />
 		</div>
 	);
 };

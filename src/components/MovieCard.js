@@ -1,18 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function MovieCard() {
+export default function MovieCard({ movie }) {
+	const { title, img, description } = movie;
+	const desc = description.split(' ').splice(0, 8).join(' ');
+
 	return (
 		<MovieCardWrapper>
 			<div className='card m-2 '>
-				<img
-					className='card-img'
-					src='https://images.unsplash.com/photo-1477666250292-1419fac4c25c?auto=format&fit=crop&w=667&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D'
-					alt='photo'
-				/>
+				<img className='card-img' src={img} alt='photo' />
 				<div className='info'>
-					<h4 className='title'>title</h4>
-					<p className='description'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint, ad?</p>
+					<h4 className='title'>{title}</h4>
+					<p className='description'>{desc}</p>
 				</div>
 			</div>
 		</MovieCardWrapper>

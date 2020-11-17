@@ -77,9 +77,15 @@ const NetflixProvider = ({ children }) => {
 
 	const moviesData = (films) => {
 		let aflam = films.map((movie) => {
-			const { genres, title, storyline, posterurl } = movie.data;
+			const { genres, originalTitle, storyline, posterurl } = movie.data;
 			const { id } = movie;
-			const singleMovie = { title: title, description: storyline, img: posterurl, genres: genres, id: id };
+			const singleMovie = {
+				title: originalTitle,
+				description: storyline,
+				img: posterurl,
+				genres: genres,
+				id: id,
+			};
 
 			return singleMovie;
 		});

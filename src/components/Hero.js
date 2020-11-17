@@ -1,26 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
 import defaultImg from '../components/photographer.jpg';
-export default function Hero() {
+export default function Hero({ movie }) {
+	const { originalTitle, storyline, posterurl } = movie;
 	return (
-		<HeroWrapper>
+		<HeroWrapper img={posterurl}>
 			<div className='hero-image'>
 				<div className='hero-text'>
-					<h1>title</h1>
+					<h1 className=''>{originalTitle}</h1>
 
 					<button>Add to watchlist</button>
 				</div>
 			</div>
 
-			<p>Page Content..</p>
+			<p className='text-muted p-5 storyline '>
+				<span className='h4 font-weight-bold'>Storyline</span> : {storyline}
+			</p>
 		</HeroWrapper>
 	);
 }
 
 const HeroWrapper = styled.div`
 	.hero-image {
-		background-image: url(${defaultImg});
-		min-height: 50vh;
+		background-image: url(${(props) => props.img});
+		min-height: 60vh;
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: cover;
@@ -31,7 +34,7 @@ const HeroWrapper = styled.div`
 		text-align: left;
 		position: absolute;
 		bottom: 0;
-		left: 0;
+		left: 14rem;
 		transform: translate(-50%, -50%);
 		color: white;
 		margin-left: 3rem;
@@ -56,5 +59,8 @@ const HeroWrapper = styled.div`
 	.hero-text button:hover {
 		background-color: #555;
 		color: white;
+	}
+	.storyline {
+		font-size: 17px;
 	}
 `;
