@@ -1,40 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import MovieCard from '../components/MovieCard';
+import MoviesFilter from '../components/MoviesFilter';
 import { NetflixContext } from '../context';
 
 const GenerePage = (props) => {
+	const { moviesGenres, sortMovies, filter } = useContext(NetflixContext);
+	const { search, year } = filter;
 	const genre = props.match.params.id;
-	const { moviesGenres } = React.useContext(NetflixContext);
 	const movies = moviesGenres[genre];
+	const sortedMovies = sortMovies(movies, search, year);
 
 	if (movies) {
 		return (
 			<div>
-				<div className='info d-flex justify-content-between mx-5 '>
-					<h1 className='text-capitalize my-3   '>{genre}</h1>
-					<div className='search-section d-flex align-self-center  '>
-						<input
-							type='search'
-							name='search'
-							id='search'
-							placeholder='search...'
-							className='form-control mr-3'
-						/>
-						<select
-							name='select'
-							id='select'
-							value='Sort By Year'
-							className='custom-select'
-							onChange={() => {}}>
-							<option value='Sort By Year'>Sort By Year</option>
-							<option value='opel'>Opel</option>
-							<option value='audi'>Audi</option>
-						</select>
-					</div>
+				<div className='info d-flex justify-content-between  mx-5 my-3 '>
+					<h1 className='text-capitalize ml-3   '>{genre}</h1>
+					<MoviesFilter filter={filter} />
 				</div>
-				<div className='d-flex flex-wrap'>
-					{movies.movies.map((movie, idx) => {
+				<div className='  d-flex flex-wrap ml-5'>
+					{sortedMovies.map((movie, idx) => {
 						return (
 							<Link to={`/movie/${movie.id}`} key={movie.id || idx}>
 								<MovieCard movie={movie} />

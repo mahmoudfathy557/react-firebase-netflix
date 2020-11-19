@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { auth, firestore } from './firebase';
+import firebase, { auth, firestore } from './firebase';
 
 const NetflixContext = React.createContext();
 
@@ -7,17 +7,20 @@ const NetflixProvider = ({ children }) => {
 	const [ isUser, setIsUser ] = useState(null);
 	const [ movies, setMovies ] = useState([]);
 	const [ moviesGenres, setMoviesGenres ] = useState([]);
+	const [ error, setError ] = useState('');
+	const [ search, setSearch ] = useState('');
+	const [ year, setYear ] = useState('Sort By Year');
+	const filter = { search, setSearch, year, setYear };
 
 	const signIn = (email, password) => {
-		const promise = auth.signInWithEmailAndPassword(email, password);
-		promise
+		firebase
+			.auth()
+			.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 			.then(() => {
-				console.log('singed in successfully');
+				return auth.signInWithEmailAndPassword(email, password);
 			})
 			.catch((err) => {
-				console.log('signin failed');
-
-				console.log(err);
+				setError(err.messages);
 			});
 	};
 
@@ -47,14 +50,6 @@ const NetflixProvider = ({ children }) => {
 			});
 	};
 
-	useEffect(() => {
-		auth.onAuthStateChanged((user) => {
-			if (user) {
-				setIsUser(user);
-			}
-		});
-	}, []);
-
 	const getMovies = async () => {
 		let moviesList = [];
 		const movies = firestore.collection('/movies');
@@ -77,14 +72,16 @@ const NetflixProvider = ({ children }) => {
 
 	const moviesData = (films) => {
 		let aflam = films.map((movie) => {
-			const { genres, originalTitle, storyline, posterurl } = movie.data;
+			const { genres, originalTitle, storyline, posterurl, year, title } = movie.data;
 			const { id } = movie;
 			const singleMovie = {
-				title: originalTitle,
+				title: title,
 				description: storyline,
 				img: posterurl,
 				genres: genres,
 				id: id,
+				originalTitle,
+				year,
 			};
 
 			return singleMovie;
@@ -113,8 +110,35 @@ const NetflixProvider = ({ children }) => {
 		setMoviesGenres(genreMovies);
 	};
 
+	const sortMovies = (moviesToSort, search, year) => {
+		let tempMovies = [ ...moviesToSort.movies ];
+
+		if (search.length > 0) {
+			tempMovies = tempMovies.filter((item) => {
+				let tempSearch = search.toLowerCase();
+				let tempTitle = item.title.toLowerCase().slice(0, search.length);
+				if (tempSearch === tempTitle) {
+					return item;
+				}
+			});
+		}
+		if (year === 'descending') {
+			tempMovies = tempMovies.sort((a, b) => b.year - a.year);
+		}
+		if (year === 'ascending') {
+			tempMovies = tempMovies.sort((a, b) => a.year - b.year);
+		}
+
+		return tempMovies;
+	};
+
 	useEffect(() => {
-		getMovies();
+		auth.onAuthStateChanged((user) => {
+			if (user) {
+				setIsUser(user);
+				getMovies();
+			}
+		});
 	}, []);
 
 	return (
@@ -122,10 +146,13 @@ const NetflixProvider = ({ children }) => {
 			value={{
 				isUser,
 				signIn,
+				error,
 				signUp,
 				logOut,
 				movies,
 				moviesGenres,
+				sortMovies,
+				filter,
 			}}>
 			{children}
 		</NetflixContext.Provider>

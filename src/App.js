@@ -18,8 +18,8 @@ class App extends Component {
 						<Route exact path='/login' component={LoginRegister} />
 						<PrivateRoute>
 							<Route exact path='/' component={Home} />
-							<Route path='/genres/:id' component={GenerePage} />
-							<Route path='/movie/:id' component={MoviePage} />
+							<Route exact path='/genres/:id' component={GenerePage} />
+							<Route exact path='/movie/:id' component={MoviePage} />
 							<Route exact path='/watchlist' component={WatchlistPage} />
 						</PrivateRoute>
 					</Switch>
