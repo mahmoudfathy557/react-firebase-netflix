@@ -14,7 +14,7 @@ const MoviePage = (props) => {
 
 	return (
 		<div>
-			<Hero movie={movie[0].data} />
+			<Hero id={id} movie={movie[0].data} />
 			<h1 className='p-5'>Related Movies</h1>
 
 			<div className='d-flex flex-wrap  ml-5'>

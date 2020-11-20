@@ -9,9 +9,11 @@ export default function MovieCard({ movie }) {
 		<MovieCardWrapper>
 			<div className='card m-2 '>
 				<img className='card-img' src={img} alt='photo' />
-				<div className='info'>
-					<h4 className='title'>{title}</h4>
-					<p className='description'>{desc}</p>
+				<div className='info-container'>
+					<div className='info'>
+						<h4 className='title'>{title}</h4>
+						<p className='description'>{desc}</p>
+					</div>
 				</div>
 			</div>
 		</MovieCardWrapper>
@@ -38,20 +40,6 @@ const MovieCardWrapper = styled.div`
 		opacity: 1;
 	}
 
-	.card::before {
-		content: "";
-		position: absolute;
-		top: 0;
-		left: 0;
-		display: block;
-		width: 100%;
-		height: 100%;
-		border-radius: 15px;
-		background: rgba(black, 0.6);
-		z-index: 2;
-		transition: 0.5s;
-		opacity: 0;
-	}
 	.card img {
 		width: 100%;
 		height: 100%;
@@ -63,7 +51,10 @@ const MovieCardWrapper = styled.div`
 	}
 	.card:hover img {
 		transition: 0.5s;
-		filter: grayscale(80%);
+	}
+	.card .info-container {
+		position: absolute;
+		margin: 0 2rem;
 	}
 	.card .info {
 		position: relative;
@@ -86,8 +77,12 @@ const MovieCardWrapper = styled.div`
 	}
 	.card:hover .info .description,
 	.card:hover .info .title {
+		overflow: hidden;
 		opacity: 1;
 		transition: 0.5s;
 		transform: translateY(-100px);
+	}
+	.card:hover {
+		background-image: linear-gradient(0deg, black);
 	}
 `;

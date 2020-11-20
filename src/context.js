@@ -11,6 +11,7 @@ const NetflixProvider = ({ children }) => {
 	const [ search, setSearch ] = useState('');
 	const [ year, setYear ] = useState('Sort By Year');
 	const filter = { search, setSearch, year, setYear };
+	const [ watchlistMovies, setWatchlistMovies ] = useState([]);
 
 	const signIn = (email, password) => {
 		firebase
@@ -111,25 +112,51 @@ const NetflixProvider = ({ children }) => {
 	};
 
 	const sortMovies = (moviesToSort, search, year) => {
-		let tempMovies = [ ...moviesToSort.movies ];
+		return moviesToSort;
+		// let tempMovies = [ ...moviesToSort ];
 
-		if (search.length > 0) {
-			tempMovies = tempMovies.filter((item) => {
-				let tempSearch = search.toLowerCase();
-				let tempTitle = item.title.toLowerCase().slice(0, search.length);
-				if (tempSearch === tempTitle) {
-					return item;
-				}
+		// if (search.length > 0) {
+		// 	tempMovies = tempMovies.filter((item) => {
+		// 		let tempSearch = search.toLowerCase();
+		// 		let tempTitle = item.title.toLowerCase().slice(0, search.length);
+		// 		if (tempSearch === tempTitle) {
+		// 			return item;
+		// 		}
+		// 	});
+		// }
+		// if (year === 'descending') {
+		// 	tempMovies = tempMovies.sort((a, b) => b.year - a.year);
+		// }
+		// if (year === 'ascending') {
+		// 	tempMovies = tempMovies.sort((a, b) => a.year - b.year);
+		// }
+
+		// return tempMovies;
+	};
+
+	const addToWatchlist = (movie) => {
+		const userId = auth.currentUser.uid;
+
+		const movieRef = firestore.collection('watchlist').doc(userId);
+
+		movieRef
+			.update({
+				movies: firebase.firestore.FieldValue.arrayUnion(movie),
+			})
+			.then(() => {
+				console.log('movie added successfully');
+				getWatchlistMovies();
+			})
+			.catch((err) => {
+				console.log(err);
 			});
-		}
-		if (year === 'descending') {
-			tempMovies = tempMovies.sort((a, b) => b.year - a.year);
-		}
-		if (year === 'ascending') {
-			tempMovies = tempMovies.sort((a, b) => a.year - b.year);
-		}
+	};
 
-		return tempMovies;
+	const getWatchlistMovies = () => {
+		const userId = auth.currentUser.uid;
+		firestore.doc(`watchlist/${userId}`).get().then((docs) => {
+			setWatchlistMovies(docs.data().movies);
+		});
 	};
 
 	useEffect(() => {
@@ -137,9 +164,12 @@ const NetflixProvider = ({ children }) => {
 			if (user) {
 				setIsUser(user);
 				getMovies();
+				getWatchlistMovies();
 			}
 		});
 	}, []);
+
+	console.log(watchlistMovies);
 
 	return (
 		<NetflixContext.Provider
@@ -153,6 +183,8 @@ const NetflixProvider = ({ children }) => {
 				moviesGenres,
 				sortMovies,
 				filter,
+				addToWatchlist,
+				watchlistMovies,
 			}}>
 			{children}
 		</NetflixContext.Provider>

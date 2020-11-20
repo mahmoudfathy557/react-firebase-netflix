@@ -9,7 +9,7 @@ const GenerePage = (props) => {
 	const { search, year } = filter;
 	const genre = props.match.params.id;
 	const movies = moviesGenres[genre];
-	const sortedMovies = sortMovies(movies, search, year);
+	const sortedMovies = sortMovies(movies.movies, search, year);
 
 	if (movies) {
 		return (

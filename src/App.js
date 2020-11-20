@@ -20,7 +20,7 @@ class App extends Component {
 							<Route exact path='/' component={Home} />
 							<Route exact path='/genres/:id' component={GenerePage} />
 							<Route exact path='/movie/:id' component={MoviePage} />
-							<Route exact path='/watchlist' component={WatchlistPage} />
+							<Route exact path='/watchlist/:id' component={WatchlistPage} />
 						</PrivateRoute>
 					</Switch>
 				</div>

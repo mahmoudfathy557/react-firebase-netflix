@@ -3,7 +3,8 @@ import { Link, NavLink } from 'react-router-dom';
 import { NetflixContext } from '../context';
 
 const SignedInLinks = () => {
-	const { logOut } = useContext(NetflixContext);
+	const { logOut, isUser } = useContext(NetflixContext);
+	const userId = isUser.uid;
 	return (
 		<div>
 			<ul className='navbar-nav'>
@@ -13,7 +14,7 @@ const SignedInLinks = () => {
 					</NavLink>
 				</li>
 				<li className='nav-item'>
-					<NavLink className='nav-link ' to='/watchlist'>
+					<NavLink className='nav-link ' to={`/watchlist/${userId}`}>
 						Watchlist
 					</NavLink>
 				</li>

@@ -1,15 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import defaultImg from '../components/photographer.jpg';
+import { NetflixContext } from '../context';
 export default function Hero({ movie }) {
+	const { addToWatchlist } = React.useContext(NetflixContext);
 	const { originalTitle, storyline, posterurl } = movie;
 	return (
-		<HeroWrapper img={posterurl}>
+		<HeroWrapper img={posterurl || defaultImg}>
 			<div className='hero-image'>
 				<div className='hero-text'>
 					<h1 className=''>{originalTitle}</h1>
 
-					<button>Add to watchlist</button>
+					<button onClick={() => addToWatchlist(movie)}>Add to watchlist</button>
 				</div>
 			</div>
 
