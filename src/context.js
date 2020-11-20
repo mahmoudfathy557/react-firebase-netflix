@@ -112,26 +112,25 @@ const NetflixProvider = ({ children }) => {
 	};
 
 	const sortMovies = (moviesToSort, search, year) => {
-		return moviesToSort;
-		// let tempMovies = [ ...moviesToSort ];
+		let tempMovies = [ ...moviesToSort ];
 
-		// if (search.length > 0) {
-		// 	tempMovies = tempMovies.filter((item) => {
-		// 		let tempSearch = search.toLowerCase();
-		// 		let tempTitle = item.title.toLowerCase().slice(0, search.length);
-		// 		if (tempSearch === tempTitle) {
-		// 			return item;
-		// 		}
-		// 	});
-		// }
-		// if (year === 'descending') {
-		// 	tempMovies = tempMovies.sort((a, b) => b.year - a.year);
-		// }
-		// if (year === 'ascending') {
-		// 	tempMovies = tempMovies.sort((a, b) => a.year - b.year);
-		// }
+		if (search.length > 0) {
+			tempMovies = tempMovies.filter((item) => {
+				let tempSearch = search.toLowerCase();
+				let tempTitle = item.title.toLowerCase().slice(0, search.length);
+				if (tempSearch === tempTitle) {
+					return item;
+				}
+			});
+		}
+		if (year === 'descending') {
+			tempMovies = tempMovies.sort((a, b) => b.year - a.year);
+		}
+		if (year === 'ascending') {
+			tempMovies = tempMovies.sort((a, b) => a.year - b.year);
+		}
 
-		// return tempMovies;
+		return tempMovies;
 	};
 
 	const addToWatchlist = (movie) => {
