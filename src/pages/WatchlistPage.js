@@ -9,19 +9,18 @@ const WatchlistPage = (props) => {
 	const [ watchlistMovies, setWatchlistMovies ] = useState([]);
 	const { sortMovies, filter } = useContext(NetflixContext);
 	const { search, year } = filter;
-	const sortedMovies = sortMovies(search, year);
+	const sortedMovies = sortMovies(watchlistMovies, search, year);
 
 	const getWatchlistMovies = () => {
-		firestore.collection('watchlist').doc(userId).collection('userWatchlist').doc().onSnapshot((doc) => {
-			console.log(doc);
+		firestore.collection('watchlist').doc(userId).get().then((docs) => {
+			setWatchlistMovies(docs.data().movies);
 		});
 	};
 
 	useEffect(() => {
-		if (userId) {
-			getWatchlistMovies();
-		}
-	});
+		getWatchlistMovies();
+	}, []);
+	console.log(watchlistMovies);
 
 	return (
 		<div>

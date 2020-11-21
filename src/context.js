@@ -34,6 +34,7 @@ const NetflixProvider = ({ children }) => {
 			})
 			.then(() => {
 				console.log('signup success');
+				return initiateWatchlist();
 			})
 			.catch((err) => {
 				console.log('signup failed');
@@ -134,21 +135,27 @@ const NetflixProvider = ({ children }) => {
 		return tempMovies;
 	};
 
+	const initiateWatchlist = () => {
+		const userId = auth.currentUser.uid;
+		return firestore.collection('watchlist').doc(userId).set({
+			movies: [],
+		});
+	};
+
 	const addToWatchlist = (movie) => {
 		const userId = auth.currentUser.uid;
 
-		const movieRef = firestore.collection('watchlist').doc(userId).collection('userWatchlist').add(movie);
-
-		// console.log(movieRef);
-		// movieRef.set({
-		// 	movies: [],
-		// });
-
-		// movieRef
-		// 	.update({
-		// 		movies: firebase.firestore.FieldValue.arrayUnion(movie),
-		// 	})
-		movieRef.then(() => console.log('updated')).catch((err) => console.log('not updated'));
+		const movieRef = firestore.collection('watchlist').doc(userId);
+		movieRef
+			.update({
+				movies: firebase.firestore.FieldValue.arrayUnion(movie),
+			})
+			.then(function() {
+				console.log('Transaction successfully committed!');
+			})
+			.catch(function(error) {
+				console.log('Transaction failed: ', error);
+			});
 	};
 
 	const getWatchlistMovies = (userId) => {
@@ -166,6 +173,7 @@ const NetflixProvider = ({ children }) => {
 			if (user) {
 				setIsUser(user);
 				getMovies();
+				// intiateWatchlist();
 			}
 		});
 	}, []);
