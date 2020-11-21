@@ -9,17 +9,8 @@ const LoginRegister = () => {
 
 	if (isUser) return <Redirect to='/' />;
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		if ((e.target.id = 'signin')) {
-			signIn(email, password);
-		} else if ((e.target.id = 'signup')) {
-			signUp(email, password);
-		}
-	};
-
 	return (
-		<form onSubmit={handleSubmit}>
+		<form>
 			<div className='container  '>
 				<div className='center'>
 					<div className='form-group'>
@@ -45,10 +36,24 @@ const LoginRegister = () => {
 					</div>
 
 					<div className='form-group d-flex justify-content-between'>
-						<button className='btn btn-secondary' id='signin'>
+						<button
+							className='btn btn-secondary'
+							id='signin'
+							type='submit'
+							onClick={(e) => {
+								e.preventDefault();
+								signIn(email, password);
+							}}>
 							Sign In
 						</button>
-						<button className='btn btn-light' id='signup'>
+						<button
+							className='btn btn-light'
+							id='signup'
+							type='submit'
+							onClick={(e) => {
+								e.preventDefault();
+								signUp(email, password);
+							}}>
 							Sign Up
 						</button>
 					</div>

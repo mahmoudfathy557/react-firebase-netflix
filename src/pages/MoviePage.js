@@ -19,7 +19,6 @@ const MoviePage = (props) => {
 
 			<div className='d-flex flex-wrap  ml-5'>
 				{filterd.map((movie, idx) => {
-					console.log(movie);
 					return (
 						<Link to={`/movie/${movie.id}`} key={movie.id || idx}>
 							<MovieCard movie={movie} />

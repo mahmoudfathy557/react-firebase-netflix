@@ -14,13 +14,13 @@ const NetflixProvider = ({ children }) => {
 	const [ watchlistMovies, setWatchlistMovies ] = useState([]);
 
 	const signIn = (email, password) => {
-		firebase
-			.auth()
-			.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+		auth
+			.signInWithEmailAndPassword(email, password)
 			.then(() => {
-				return auth.signInWithEmailAndPassword(email, password);
+				console.log('singed in successfully');
 			})
 			.catch((err) => {
+				console.log(err);
 				setError(err.messages);
 			});
 	};
@@ -29,14 +29,15 @@ const NetflixProvider = ({ children }) => {
 		const promise = auth.createUserWithEmailAndPassword(email, password);
 		promise
 			.then((res) => {
+				console.log(res);
 				return firestore.collection('users').doc(res.user.uid);
 			})
 			.then(() => {
 				console.log('signup success');
 			})
 			.catch((err) => {
-				console.log(err);
 				console.log('signup failed');
+				console.log(err);
 			});
 	};
 
@@ -136,26 +137,28 @@ const NetflixProvider = ({ children }) => {
 	const addToWatchlist = (movie) => {
 		const userId = auth.currentUser.uid;
 
-		const movieRef = firestore.collection('watchlist').doc(userId);
+		const movieRef = firestore.collection('watchlist').doc(userId).collection('userWatchlist').add(movie);
 
-		movieRef
-			.update({
-				movies: firebase.firestore.FieldValue.arrayUnion(movie),
-			})
-			.then(() => {
-				console.log('movie added successfully');
-				getWatchlistMovies();
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		// console.log(movieRef);
+		// movieRef.set({
+		// 	movies: [],
+		// });
+
+		// movieRef
+		// 	.update({
+		// 		movies: firebase.firestore.FieldValue.arrayUnion(movie),
+		// 	})
+		movieRef.then(() => console.log('updated')).catch((err) => console.log('not updated'));
 	};
 
-	const getWatchlistMovies = () => {
-		const userId = auth.currentUser.uid;
+	const getWatchlistMovies = (userId) => {
+		// const userId = auth.currentUser.uid;
+		let watchlist = [];
 		firestore.doc(`watchlist/${userId}`).get().then((docs) => {
 			setWatchlistMovies(docs.data().movies);
+			watchlist.push(docs.data().movies);
 		});
+		return watchlist;
 	};
 
 	useEffect(() => {
@@ -163,12 +166,12 @@ const NetflixProvider = ({ children }) => {
 			if (user) {
 				setIsUser(user);
 				getMovies();
-				getWatchlistMovies();
 			}
 		});
 	}, []);
 
 	console.log(watchlistMovies);
+	// console.log(getWatchlistMovies());
 
 	return (
 		<NetflixContext.Provider
@@ -183,6 +186,7 @@ const NetflixProvider = ({ children }) => {
 				sortMovies,
 				filter,
 				addToWatchlist,
+				getWatchlistMovies,
 				watchlistMovies,
 			}}>
 			{children}

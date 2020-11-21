@@ -2,15 +2,26 @@ import React, { useContext, useState, useEffect } from 'react';
 import MoviesFilter from '../components/MoviesFilter';
 import { NetflixContext } from '../context';
 import MovieCard from '../components/MovieCard';
+import { firestore } from '../firebase';
 
 const WatchlistPage = (props) => {
 	const userId = props.match.params.id;
-
-	const { sortMovies, filter, watchlistMovies } = useContext(NetflixContext);
+	const [ watchlistMovies, setWatchlistMovies ] = useState([]);
+	const { sortMovies, filter } = useContext(NetflixContext);
 	const { search, year } = filter;
+	const sortedMovies = sortMovies(search, year);
 
-	const sortedMovies = sortMovies(watchlistMovies, search, year);
-	console.log(sortedMovies);
+	const getWatchlistMovies = () => {
+		firestore.collection('watchlist').doc(userId).collection('userWatchlist').doc().onSnapshot((doc) => {
+			console.log(doc);
+		});
+	};
+
+	useEffect(() => {
+		if (userId) {
+			getWatchlistMovies();
+		}
+	});
 
 	return (
 		<div>
