@@ -12,7 +12,7 @@ const Navbar = () => {
 		<nav className='navbar navbar-expand-lg navbar-dark bg-dark   d-flex'>
 			<div className='container nav-container justify-content-around p-0 '>
 				<Link className='navbar-brand text-danger' to='/'>
-					Net<span className='text-light'>flix</span>
+					Netflix <span className='text-light'>الغلابة </span>
 				</Link>
 				{links}
 			</div>
