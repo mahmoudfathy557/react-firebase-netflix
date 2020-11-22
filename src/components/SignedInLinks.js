@@ -8,8 +8,10 @@ const SignedInLinks = () => {
 	return (
 		<div>
 			<ul className='navbar-nav'>
+				<li className='nav-item' />
+
 				<li className='nav-item'>
-					<NavLink className='nav-link' to='/'>
+					<NavLink className='nav-link btn' to={`/`}>
 						Home
 					</NavLink>
 				</li>

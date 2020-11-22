@@ -3,6 +3,7 @@ import MoviesFilter from '../components/MoviesFilter';
 import { NetflixContext } from '../context';
 import MovieCard from '../components/MovieCard';
 import { firestore } from '../firebase';
+import { Link } from 'react-router-dom';
 
 const WatchlistPage = (props) => {
 	const userId = props.match.params.id;
@@ -30,17 +31,22 @@ const WatchlistPage = (props) => {
 			<div className='d-flex flex-wrap  ml-5 '>
 				{sortedMovies &&
 					sortedMovies.map((movie, id) => {
+						console.log(movie);
 						const singleMovie = {
 							title: movie.title,
 							description: movie.storyline,
 							img: movie.posterurl,
 							genres: movie.genres,
-
+							id: movie.id,
 							originalTitle: movie.originalTitle,
 							year: movie.year,
 						};
 
-						return <MovieCard movie={singleMovie} key={id} />;
+						return (
+							<Link to={`/movie/${singleMovie.id}`} key={id}>
+								<MovieCard movie={singleMovie} key={id} />
+							</Link>
+						);
 					})}
 			</div>
 		</div>

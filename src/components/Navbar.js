@@ -9,10 +9,10 @@ const Navbar = () => {
 	const links = isUser ? <SignedInLinks /> : <SignedOutLinks />;
 
 	return (
-		<nav className='navbar navbar-expand-lg navbar-dark bg-dark  d-flex'>
-			<div className='container nav-container justify-content-center p-0 '>
-				<Link className='navbar-brand' to='/'>
-					Netflix
+		<nav className='navbar navbar-expand-lg navbar-dark bg-dark   d-flex'>
+			<div className='container nav-container justify-content-around p-0 '>
+				<Link className='navbar-brand text-danger' to='/'>
+					Net<span className='text-light'>flix</span>
 				</Link>
 				{links}
 			</div>
