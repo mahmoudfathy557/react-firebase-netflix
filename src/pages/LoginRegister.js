@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { NetflixContext } from '../context';
 
 const LoginRegister = () => {
-	const { signIn, signUp, isUser } = useContext(NetflixContext);
+	const { signIn, signUp, isUser, error } = useContext(NetflixContext);
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
 
@@ -57,6 +57,11 @@ const LoginRegister = () => {
 							Sign Up
 						</button>
 					</div>
+					{error ? (
+						<div className='alert alert-danger text-center mt-5 login-error' role='alert'>
+							{error}
+						</div>
+					) : null}
 				</div>
 			</div>
 		</form>

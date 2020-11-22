@@ -7,7 +7,7 @@ const NetflixProvider = ({ children }) => {
 	const [ isUser, setIsUser ] = useState(null);
 	const [ movies, setMovies ] = useState([]);
 	const [ moviesGenres, setMoviesGenres ] = useState([]);
-	const [ error, setError ] = useState('');
+	const [ error, setError ] = useState(null);
 	const [ search, setSearch ] = useState('');
 	const [ year, setYear ] = useState('Sort By Year');
 	const filter = { search, setSearch, year, setYear };
@@ -39,6 +39,7 @@ const NetflixProvider = ({ children }) => {
 			.catch((err) => {
 				console.log('signup failed');
 				console.log(err);
+				setError(err.message);
 			});
 	};
 
