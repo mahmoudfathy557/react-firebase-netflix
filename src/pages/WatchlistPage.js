@@ -20,7 +20,6 @@ const WatchlistPage = (props) => {
 	useEffect(() => {
 		getWatchlistMovies();
 	}, []);
-	console.log(watchlistMovies);
 
 	return (
 		<div>

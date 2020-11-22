@@ -3,17 +3,15 @@ import styled from 'styled-components';
 
 export default function MovieCard({ movie }) {
 	const { title, img, description } = movie;
-	const desc = description.split(' ').splice(0, 8).join(' ');
+	const desc = description.split(' ').splice(0, 7).join(' ');
 
 	return (
 		<MovieCardWrapper>
 			<div className='card m-2 '>
 				<img className='card-img' src={img} alt='photo' />
-				<div className='info-container'>
-					<div className='info'>
-						<h4 className='title'>{title}</h4>
-						<p className='description'>{desc}</p>
-					</div>
+				<div className='overlay'>
+					<div className='title'>{title}</div>
+					<div className='description'>{desc}</div>
 				</div>
 			</div>
 		</MovieCardWrapper>
@@ -36,9 +34,6 @@ const MovieCardWrapper = styled.div`
 	.card:hover {
 		transform: translateY(20px);
 	}
-	.card:hover::before {
-		opacity: 1;
-	}
 
 	.card img {
 		width: 100%;
@@ -49,40 +44,44 @@ const MovieCardWrapper = styled.div`
 		left: 0;
 		border-radius: 15px;
 	}
-	.card:hover img {
-		transition: 0.5s;
-	}
-	.card .info-container {
+
+	.overlay {
 		position: absolute;
-		margin: 0 2rem;
-	}
-	.card .info {
-		position: relative;
-		z-index: 3;
-		color: white;
-		opacity: 1;
-		transform: translateY(30px);
-		transition: 0.5s;
-		left: 0px;
-		bottom: -263px;
-	}
-	.card .info h4 {
-		margin: 0px;
-	}
-	.card .info .description {
-		opacity: 0;
-		letter-spacing: 1px;
-		font-size: 15px;
-		margin-top: 8px;
-	}
-	.card:hover .info .description,
-	.card:hover .info .title {
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: linear-gradient(to bottom, #8e0e00, #1f1c18);
 		overflow: hidden;
-		opacity: 1;
-		transition: 0.5s;
-		transform: translateY(-100px);
+		width: 100%;
+		height: 0;
+		transition: .5s ease;
 	}
-	.card:hover {
-		background-image: linear-gradient(0deg, black);
+
+	.card:hover .overlay {
+		height: 100%;
+		opacity: .8;
+	}
+
+	.title {
+		color: white;
+		font-size: 34px;
+		position: absolute;
+		top: 30%;
+		left: 50%;
+		-webkit-transform: translate(-50%, -50%);
+		-ms-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		text-align: center;
+	}
+	.description {
+		color: white;
+		font-size: 20px;
+		position: absolute;
+		top: 70%;
+		left: 50%;
+		-webkit-transform: translate(-50%, -50%);
+		-ms-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		text-align: center;
 	}
 `;
