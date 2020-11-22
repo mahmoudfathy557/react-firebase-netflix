@@ -21,7 +21,7 @@ const NetflixProvider = ({ children }) => {
 			})
 			.catch((err) => {
 				console.log(err);
-				setError(err.messages);
+				setError(err.message);
 			});
 	};
 

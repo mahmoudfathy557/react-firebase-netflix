@@ -8,7 +8,6 @@ const LoginRegister = () => {
 	const [ password, setPassword ] = useState('');
 
 	if (isUser) return <Redirect to='/' />;
-
 	return (
 		<form>
 			<div className='container  '>
