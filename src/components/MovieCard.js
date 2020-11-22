@@ -2,15 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 
 export default function MovieCard({ movie }) {
-	const { title, img, description } = movie;
-	const desc = description.split(' ').splice(0, 7).join(' ');
+	const { title, img, description, originalTitle } = movie;
+	const desc = description.split(' ').splice(0, 10).join(' ');
 
 	return (
 		<MovieCardWrapper>
 			<div className='card m-2 '>
 				<img className='card-img' src={img} alt='photo' />
 				<div className='overlay'>
-					<div className='title'>{title}</div>
+					<div className='title'>{originalTitle || title}</div>
 					<div className='description'>{desc}</div>
 				</div>
 			</div>
@@ -64,7 +64,7 @@ const MovieCardWrapper = styled.div`
 
 	.title {
 		color: white;
-		font-size: 34px;
+		font-size: 30px;
 		position: absolute;
 		top: 30%;
 		left: 50%;
@@ -75,9 +75,9 @@ const MovieCardWrapper = styled.div`
 	}
 	.description {
 		color: white;
-		font-size: 20px;
+		font-size: 18px;
 		position: absolute;
-		top: 70%;
+		top: 75%;
 		left: 50%;
 		-webkit-transform: translate(-50%, -50%);
 		-ms-transform: translate(-50%, -50%);
