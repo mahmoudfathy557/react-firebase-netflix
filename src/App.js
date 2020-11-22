@@ -7,6 +7,7 @@ import GenerePage from './pages/GenerePage';
 import WatchlistPage from './pages/WatchlistPage';
 import Navbar from './components/Navbar';
 import PrivateRoute from './PrivateRoute';
+import Default from './pages/Default';
 
 class App extends Component {
 	render() {
@@ -22,6 +23,7 @@ class App extends Component {
 							<Route exact path='/movie/:id' component={MoviePage} />
 							<Route exact path='/watchlist/:id' component={WatchlistPage} />
 						</PrivateRoute>
+						<Route component={Default} />
 					</Switch>
 				</div>
 			</Router>
